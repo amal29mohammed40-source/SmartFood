@@ -1,0 +1,10 @@
+namespace SmartFood.Models;
+
+public class AiSuggestionRequest
+{
+    public int Weight { get; set; }
+    public string Goal { get; set; } = "";
+    public int TargetCalories { get; set; }
+    public int MaxCookingTime { get; set; }
+    public string Ingredients { get; set; } = "";
+}

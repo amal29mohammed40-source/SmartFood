@@ -1,0 +1,115 @@
+@model SmartFood.Controllers.MealPlannerViewModel
+@{
+    ViewData["Title"] = "Weekly Meal Planner";
+    
+    var daysOfWeek = new[] { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+    var mealTypes = new[] { "Breakfast", "Lunch", "Dinner", "Snack" };
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <div class="border-b border-gray-200 pb-6 mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-black text-gray-950 tracking-tight flex items-center gap-3">
+                    <i class="fa-regular fa-calendar-days text-emerald-600"></i> Weekly Meal Planner
+                </h1>
+                <p class="text-sm text-gray-500 mt-1">Optimize your nutrition, manage daily macros, and track goals effortlessly.</p>
+            </div>
+            <div class="flex items-center gap-4 bg-emerald-50 text-emerald-800 px-4 py-3 rounded-2xl text-xs font-semibold">
+                <span class="flex items-center gap-1"><i class="fa-solid fa-fire text-amber-500"></i> Active Schedule</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            @foreach (var day in daysOfWeek)
+            {
+                // قراءة السعرات والماكروز المحسوبة مسبقاً في السيرفر بشكل O(1)
+                var totalCalories = Model.DailyCalories.ContainsKey(day) ? Model.DailyCalories[day] : 0;
+                
+                // 💡 التعديل هنا: جلب القيم الثلاث بالترتيب لضمان قراءتها بشكل صحيح في الـ Razor Page
+                var protein = Model.DailyMacros.ContainsKey(day) ? Model.DailyMacros[day].Item1 : 0;
+                var carbs = Model.DailyMacros.ContainsKey(day) ? Model.DailyMacros[day].Item2 : 0;
+                var fat = Model.DailyMacros.ContainsKey(day) ? Model.DailyMacros[day].Item3 : 0;
+
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 space-y-6 hover:shadow-md transition">
+                    
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                            <i class="fa-solid fa-square-check text-emerald-500 text-sm"></i> @day
+                        </h2>
+                        <div class="text-right space-y-1">
+                            <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-extrabold px-2.5 py-1 rounded-lg">
+                                <i class="fa-solid fa-fire text-amber-400 mr-0.5"></i> @totalCalories kcal
+                            </span>
+                            <div class="text-[10px] text-gray-500 font-medium space-x-2">
+                                <span>🥩 P: @(protein)g</span>
+                                <span>🌿 C: @(carbs)g</span>
+                                <span>🥑 F: @(fat)g</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        @foreach (var type in mealTypes)
+                        {
+                            // فحص وجود وجبة مضافة لهذا اليوم وهذا النوع داخل قاموس الـ ScheduledMeals
+                            var hasMeal = Model.ScheduledMeals.TryGetValue((day, type), out var meal);
+
+                            <div class="flex items-center justify-between p-3 rounded-2xl bg-gray-50 hover:bg-gray-100/70 transition gap-4">
+                                
+                                <div class="flex items-center gap-3 min-w-[100px]">
+                                    <div class="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-xs font-black text-gray-700 uppercase">
+                                        @type.Substring(0, 1)
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">@type</p>
+                                        @if (hasMeal && meal?.Recipe != null)
+                                        {
+                                            <p class="text-sm font-bold text-gray-900 line-clamp-1">@meal.Recipe.Title</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-sm font-medium text-gray-400 italic">Empty slot</p>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div>
+                                    @if (hasMeal && meal != null)
+                                    {
+                                        <form asp-controller="MealPlanner" asp-action="Delete" asp-route-id="@meal.Id" method="post" onsubmit="return confirm('Remove this meal?');">
+                                            <button type="submit" class="w-8 h-8 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 transition flex items-center justify-center">
+                                                <i class="fa-regular fa-trash-can text-sm"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <a href="/MealPlanner/Create?day=@day&type=@type" class="w-8 h-8 rounded-xl bg-white hover:bg-emerald-600 border border-gray-200 hover:border-emerald-600 text-emerald-600 hover:text-white shadow-sm transition flex items-center justify-center font-bold" title="Add Meal">
+                                            <i class="fa-solid fa-plus text-xs"></i>
+                                        </a>
+                                    }
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            }
+        </div>
+
+    </div>
+
+</body>
+</html>

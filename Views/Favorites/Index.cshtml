@@ -1,0 +1,90 @@
+@model IEnumerable<SmartFood.Models.Favorite>
+@{
+    ViewData["Title"] = "My Favorites";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <div class="flex items-center justify-between border-b border-gray-200 pb-5 mb-10">
+            <div>
+                <h1 class="text-3xl font-black text-gray-950 tracking-tight flex items-center gap-3">
+                    <i class="fa-solid fa-heart text-red-500 animate-pulse"></i> Your Saved Recipes
+                </h1>
+                <p class="text-sm text-gray-500 mt-1">Here are all the healthy recipes you have saved to your favorites.</p>
+            </div>
+            <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">
+                @Model.Count() Recipes Saved
+            </span>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="text-center py-20 bg-white rounded-3xl shadow-sm border border-gray-100 max-w-xl mx-auto p-8">
+                <div class="w-16 h-16 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                    <i class="fa-regular fa-folder-open"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900">No recipes saved yet</h3>
+                <p class="text-gray-500 text-sm mt-1 max-w-xs mx-auto">Explore our AI suggestions and recipes list to add your favorites here!</p>
+                <a href="/Recipes" class="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm rounded-xl transition">
+                    Browse Recipes
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach (var item in Model)
+                {
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition border border-gray-100 flex flex-col group">
+                        
+                        <div class="relative overflow-hidden h-52 bg-gray-100">
+                            <img src="@(string.IsNullOrEmpty(item.Recipe?.ImageUrl) ? "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=600" : item.Recipe.ImageUrl)" 
+                                 alt="@item.Recipe?.Title" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                            
+                            <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs font-bold px-2.5 py-1 rounded-lg">
+                                <i class="fa-solid fa-fire text-amber-400 mr-1"></i> @item.Recipe?.Calories kcal
+                            </div>
+                        </div>
+
+                        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 line-clamp-1">@item.Recipe?.Title</h3>
+                                <p class="text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">@item.Recipe?.Description</p>
+                            </div>
+
+                            <div class="flex items-center gap-4 text-xs font-medium text-gray-600 bg-gray-50 p-2.5 rounded-xl">
+                                <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-emerald-600"></i> @item.Recipe?.CookingTime mins</span>
+                                <span class="flex items-center gap-1"><i class="fa-solid fa-bullseye text-emerald-600"></i> @item.Recipe?.Goal</span>
+                            </div>
+
+                            <div class="flex items-center gap-2 pt-2">
+                                <a href="/Recipes/Details/@item.RecipeId" class="flex-1 text-center py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-sm font-semibold rounded-xl transition">
+                                    View Full Recipe
+                                </a>
+                                
+                                <form asp-controller="Favorites" asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Are you sure you want to remove this recipe?');">
+                                    <button type="submit" class="p-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl transition" title="Remove from favorites">
+                                        <i class="fa-regular fa-trash-can text-base"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+</body>
+</html>

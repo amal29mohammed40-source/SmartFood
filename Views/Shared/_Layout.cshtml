@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Smart Food</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4"></script>
+
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <div class="flex items-center gap-2">
+                <div class="bg-emerald-600 text-white p-2 rounded-xl shadow-md shadow-emerald-200">
+                    <i class="fa-solid fa-utensils text-xl"></i>
+                </div>
+                <span class="text-2xl font-black text-gray-900 tracking-tight">Smart<span class="text-emerald-600">Food</span></span>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 font-medium text-gray-600">
+                <a asp-controller="Home" asp-action="Index" class="hover:text-emerald-600 transition">Home</a>
+                <a asp-controller="Recipes" asp-action="Index" class="hover:text-emerald-600 transition">Recipes</a>
+                <a asp-controller="Ai" asp-action="Index" class="hover:text-emerald-600 transition">AI Suggestions</a>
+                <a asp-controller="Favorites" asp-action="Index" class="hover:text-emerald-600 transition">Favorites</a>
+                <a asp-controller="MealPlanner" asp-action="Index" class="hover:text-emerald-600 transition">Planner</a>
+            </nav>
+
+            <div class="auth-section">
+                @await Html.PartialAsync("_LoginPartial")
+            </div>
+        </div>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,66 @@
+/* --- التنسيقات العامة --- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #faf8f1;
+    color: #07180f;
+    font-family: 'Poppins', Arial, sans-serif; /* قمت بإضافة Poppins ليتناسق مع التصميم */
+}
+
+/* --- الهيدر (Navbar) --- */
+.navbar {
+    height: 70px;
+    background: #fffdf8;
+    border-bottom: 1px solid #e3dfd2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 42px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; color: #2f824d; font-size: 19px; }
+.logo { width: 42px; height: 42px; background: #378c52; color: white; border-radius: 50%; display: grid; place-items: center; }
+.nav-links { display: flex; gap: 26px; }
+.nav-links a { color: #5e665f; text-decoration: none; font-size: 15px; }
+.nav-links a:hover { color: #378c52; }
+/* استخدام !important يجبر المتصفح على تجاهل أي إعدادات أخرى في Bootstrap */
+a {
+    color: #4b5563 !important; 
+    text-decoration: none !important;
+}
+
+a:hover {
+    color: #059669 !important; 
+}
+/* --- صفحة Home (Hero Section) --- */
+.main-container { padding: 36px 52px; }
+.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 55px; align-items: center; min-height: 520px; }
+.hero h1 { font-size: 64px; line-height: 1.12; margin: 30px 0 22px; letter-spacing: -2px; }
+.hero h1 span { color: #378c52; }
+.hero-img { width: 100%; height: 450px; object-fit: cover; border-radius: 28px; box-shadow: 0 20px 50px rgba(0,0,0,.08); }
+
+/* --- صفحة AI Suggestions --- */
+.ai-wrapper { max-width: 1150px; margin: auto; padding: 40px 20px; }
+.ai-header h1 { font-size: 42px; margin-bottom: 8px; }
+.ai-grid { margin-top: 35px; display: grid; grid-template-columns: 420px 1fr; gap: 28px; }
+.ai-form { background: white; padding: 28px; border-radius: 28px; border: 1px solid #dbe8d8; box-shadow: 0 18px 45px rgba(20, 60, 35, .08); }
+.ai-form label { display: block; margin-top: 16px; margin-bottom: 8px; font-weight: 700; }
+.ai-form input, .ai-form select { width: 100%; height: 48px; border-radius: 14px; border: 1px solid #d6dfd4; padding: 0 14px; font-size: 15px; }
+.ai-form button { width: 100%; margin-top: 24px; height: 52px; border: 0; border-radius: 16px; background: #2f8a4b; color: white; font-weight: 800; cursor: pointer; }
+
+/* --- النتائج --- */
+.result-card { display: grid; grid-template-columns: 160px 1fr; gap: 18px; background: white; border: 1px solid #dbe8d8; border-radius: 24px; padding: 16px; margin-bottom: 18px; box-shadow: 0 14px 35px rgba(20, 60, 35, .06); }
+.result-card img { width: 160px; height: 130px; border-radius: 18px; object-fit: cover; }
+
+/* --- التجاوب مع الجوال (Media Query) --- */
+@media (max-width: 900px) {
+    .navbar { height: auto; padding: 18px; flex-direction: column; gap: 16px; }
+    .hero { grid-template-columns: 1fr; }
+    .ai-grid { grid-template-columns: 1fr; }
+}

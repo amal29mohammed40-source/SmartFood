@@ -1,0 +1,78 @@
+@using SmartFood.Models
+@{
+    ViewData["Title"] = "Add Meal to Planner";
+    var recipes = ViewBag.Recipes as List<Recipe> ?? new List<Recipe>();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <div class="max-w-xl mx-auto px-4 py-16">
+        
+        <a href="/MealPlanner" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-emerald-600 transition mb-6">
+            <i class="fa-solid fa-arrow-left"></i> Back to Weekly Planner
+        </a>
+
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 space-y-6">
+            
+            <div class="border-b border-gray-100 pb-4">
+                <h1 class="text-2xl font-black text-gray-950 tracking-tight flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-emerald-600"></i> Schedule a New Meal
+                </h1>
+                <p class="text-xs text-gray-400 mt-1">Select a recipe to add to your personalized nutrition routine.</p>
+            </div>
+
+            <form asp-controller="MealPlanner" asp-action="Create" method="post" class="space-y-5">
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Selected Day</label>
+                        <input type="text" name="dayName" value="@ViewBag.DayName" readonly
+                               class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:outline-none cursor-not-allowed" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Meal Slot</label>
+                        <input type="text" name="mealType" value="@ViewBag.MealType" readonly
+                               class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:outline-none cursor-not-allowed" />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Choose Recipe</label>
+                    <div class="relative">
+                        <select name="recipeId" required 
+                                class="w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-800 shadow-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition appearance-none">
+                            <option value="" disabled selected>-- Select a healthy recipe --</option>
+                            @foreach (var recipe in recipes)
+                            {
+                                <option value="@recipe.Id">@recipe.Title (@recipe.Calories kcal)</option>
+                            }
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-4 border-t border-gray-50">
+                    <a href="/MealPlanner" class="flex-1 text-center py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-xl transition">
+                        Cancel
+                    </a>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-emerald-100 transition">
+                        Save to Schedule
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+@{
+    Layout = null; // قطع التداخل تماماً لتظهر صفحتكِ الخضراء الرائعة
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Food - Sign In</title>
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f9fafb; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10 transition-all">
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-50 rounded-2xl text-4xl mb-4">🍲</div>
+            <h2 class="text-3xl font-bold text-gray-950 tracking-tight">Welcome Back</h2>
+            <p class="text-sm text-gray-500 mt-2">Log in to monitor your calories and track meals.</p>
+        </div>
+
+        <form method="post" action="/Login" class="space-y-6">
+
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Email Address</label>
+                <input type="email" name="email" required class="block w-full rounded-xl border border-gray-200 px-4 py-3.5 text-gray-900 shadow-sm placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm transition" placeholder="name@example.com" />
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Password</label>
+                <input type="password" name="password" required class="block w-full rounded-xl border border-gray-200 px-4 py-3.5 text-gray-900 shadow-sm placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm transition" placeholder="••••••••" />
+            </div>
+
+            <div class="flex items-center">
+                <input type="checkbox" name="rememberMe" value="true" class="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
+                <label class="ml-2 block text-xs font-semibold text-gray-500">Remember me</label>
+            </div>
+
+            <div>
+                <button type="submit" class="flex w-full justify-center rounded-xl bg-emerald-600 py-3.5 px-4 text-sm font-semibold text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition cursor-pointer">
+                    Sign In
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

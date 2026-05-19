@@ -1,0 +1,21 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<ul class="flex items-center gap-4" style="display: flex; list-style: none; align-items: center; gap: 15px; margin: 0; padding: 0;">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="text-sm font-semibold text-gray-700 flex items-center gap-2" style="font-size: 14px; font-weight: 600; color: #374151;">
+        <i class="fa-regular fa-user text-emerald-600"></i> Hello, @User.Identity?.Name!
+    </li>
+    <li>
+        <form asp-controller="Account" asp-action="Logout" method="post" style="margin: 0;">
+            <button type="submit" class="text-xs font-bold text-red-500 hover:text-red-700 transition cursor-pointer bg-transparent border-0 p-0" style="font-size: 12px; font-weight: 700; color: #ef4444; background: none; border: none; cursor: pointer;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+            </button>
+        </form>
+    </li>
+}
+else
+{
+    }
+</ul>
